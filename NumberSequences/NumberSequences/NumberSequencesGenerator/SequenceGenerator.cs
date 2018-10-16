@@ -6,22 +6,24 @@ namespace NumberSequences.NumberSequencesGenerator
     public abstract class SequenceGenerator : ISequenceGenerator
     {
         protected const int NOT_INITIALIZED = -1;
-        protected int minimumValue = 0;
 
         public SequenceGenerator()
         {
-            this.StartWith = NOT_INITIALIZED;
-            this.Border = NOT_INITIALIZED;
+            this.StartValue = NOT_INITIALIZED;
+            this.BoundaryValue = NOT_INITIALIZED;
             this.IsInitialized = false;
+            this.MinimumValue = 0;
         }
 
-        public int StartWith
+        public abstract event EventHandler DoNotHaveElementsInSequence;
+
+        public int StartValue
         {
             get;
             protected set;
         }
 
-        public int Border
+        public int BoundaryValue
         {
             get;
             protected set;
@@ -33,29 +35,35 @@ namespace NumberSequences.NumberSequencesGenerator
             protected set;
         }
 
-        public void Initialize(int border, int startWith)
+        public int MinimumValue
         {
-            if (border < startWith)
+            get;
+            protected set;
+        }
+
+        public void Initialize(int startValue, int boundaryValue)
+        {
+            if (boundaryValue < startValue)
             {
-                throw new ArgumentException("Start value of sequence can not be less than "
-                    + "end value of sequence!");
+                throw new ArgumentException("Boundary value of sequence can not be less than "
+                    + "start value of sequence!");
             }
 
-            if (border < this.minimumValue || startWith < this.minimumValue)
+            if (boundaryValue < this.MinimumValue || startValue < this.MinimumValue)
             {
                 throw new ArgumentException("Invalid value of arguments! "
                     + "Can`t build sequence with such values! "
-                    + $"Sequence of requested type starts with {this.minimumValue}!");
+                    + $"Sequence of requested type starts with {this.MinimumValue}!");
             }
 
-            this.StartWith = startWith;
-            this.Border = border;
+            this.StartValue = startValue;
+            this.BoundaryValue = boundaryValue;
             this.IsInitialized = true;
         }
 
-        public void Initialize(int border)
+        public void Initialize(int boundaryValue)
         {
-            this.Initialize(border, this.minimumValue);
+            this.Initialize(this.MinimumValue, boundaryValue);
         }
 
         public abstract IEnumerator GetEnumerator();

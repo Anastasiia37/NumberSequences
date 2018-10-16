@@ -48,7 +48,10 @@
     <Compile Include="NumberSequencesGenerator\SquareLessNSequenceGenerator.cs" />
     <Compile Include="NumberSequencesGenerator\SequenceGenerator.cs" />
     <Compile Include="UI\ArgumentsCount.cs" />
-    <Compile Include="UI\InvalidArgumentsException.cs" />
+    <Compile Include="UI\InvalidArgumentsExceptions\InvalidArgumentsValueException.cs" />
+    <Compile Include="UI\InvalidArgumentsExceptions\InvalidCountOfArgumentsException.cs" />
+    <Compile Include="UI\InvalidArgumentsExceptions\InvalidArgumentsException.cs" />
+    <Compile Include="UI\InvalidArgumentsExceptions\InvalidGeneratorException.cs" />
     <Compile Include="UI\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\ReturnCode.cs" />

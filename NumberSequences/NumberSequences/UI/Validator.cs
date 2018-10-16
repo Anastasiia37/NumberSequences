@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using NumberSequences.NumberSequencesGenerator;
 
 namespace NumberSequences.UI
 {
     internal static class Validator
     {
-        public static void Parse(string[] args,
-                                out ISequenceGenerator sequenceGenerator,
-                                out int border, 
-                                out int? startWith)
+        public static void Parse(
+            string[] args,
+            out ISequenceGenerator sequenceGenerator,
+            out int boundaryValue, 
+            out int? startValue)
         {
             if (args.Length < (int)ArgumentsCount.Minimum)
             {
@@ -24,54 +24,46 @@ namespace NumberSequences.UI
             }
 
             string sequenceGeneratorType = args[0].ToLower();
-            if (sequenceGeneratorType == "fibonacci")
+            switch (sequenceGeneratorType)
             {
-                sequenceGenerator = new FibonacciSequenceGenerator();
-            }
-            else
-            {
-                if (sequenceGeneratorType == "squarelessn")
-                {
+                case "fibonacci":
+                    sequenceGenerator = new FibonacciSequenceGenerator();
+                    break;
+                case "squarelessn":
                     sequenceGenerator = new SquareLessNSequenceGenerator();
-                }
-                else
-                {
+                    break;
+                default:
                     throw new InvalidGeneratorException("Please, enter correct algorithm "
                             + "for searching the sequence");
-                }
             }
 
-            if (!int.TryParse(args[1], out border))
+            if (!int.TryParse(args[1], out boundaryValue))
             {
                 throw new FormatException("The second argument is not a number!");
             }
 
-            int thirdArgument;
+            startValue = null;
             if (args.Length == (int)ArgumentsCount.Maximum)
             {
+                int thirdArgument;
                 if (!int.TryParse(args[2], out thirdArgument))
                 {
                     throw new FormatException("The third argument is not a number!");
                 }
                 else
                 {
-                    startWith = thirdArgument;
-                    if (startWith - border >= 0)
+                    startValue = thirdArgument;
+                    if (startValue - boundaryValue > 0)
                     {
-                        throw new InvalidArgumentsValueException("The third argument can not be "
-                            + "bigger than second Please, check your arguments!");
+                        throw new InvalidArgumentsValueException("The third argument (boundary value) can not be "
+                            + "bigger than second (start value)! Please, check your arguments!");
                     }
 
-                    if (startWith < 0 || border < 0)
+                    if (startValue < 0 || boundaryValue < 0)
                     {
-                        throw new InvalidArgumentsValueException("Argument can not be "
-                            + "negative!");
+                        throw new InvalidArgumentsValueException("Arguments can not be negative!");
                     }
                 }
-            }
-            else
-            {
-                startWith = null;
             }
         }
     }

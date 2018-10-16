@@ -3,11 +3,13 @@ using System.Collections;
 
 namespace NumberSequences.NumberSequencesGenerator
 {
-    public class FibonacciSequenceGenerator : SequenceGenerator
+    public class FibonacciSequenceGenerator : SequenceGenerator, IEnumerable
     {
         public FibonacciSequenceGenerator() : base()
         {
         }
+
+        public override event EventHandler DoNotHaveElementsInSequence;
 
         public override IEnumerator GetEnumerator()
         {
@@ -15,17 +17,26 @@ namespace NumberSequences.NumberSequencesGenerator
             {
                 int firstElement = 0;
                 int secondElement = 1;
-                while (firstElement != this.StartWith)
+                while (firstElement < this.StartValue)
                 {
                     this.GetNext(ref firstElement, ref secondElement);
                 }
 
-                do
+                if (firstElement > this.BoundaryValue)
+                {
+                    this.DoNotHaveElementsInSequence?.Invoke(this, EventArgs.Empty);
+                    yield break;
+                }
+
+                while (!(firstElement > this.BoundaryValue))
                 {
                     yield return firstElement;
                     this.GetNext(ref firstElement, ref secondElement);
                 }
-                while (firstElement <= this.Border);
+            }
+            else
+            {
+                throw new ArgumentNullException("The sequence is not initialized!");
             }
         }
 

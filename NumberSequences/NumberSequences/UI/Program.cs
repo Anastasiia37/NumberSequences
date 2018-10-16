@@ -2,7 +2,7 @@
 
 namespace NumberSequences.UI
 {
-    class Program
+    public class Program
     {
         public static int Main(string[] args)
         {

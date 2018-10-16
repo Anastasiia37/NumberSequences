@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using NumberSequences.NumberSequencesGenerator;
 
 namespace NumberSequences.UI
@@ -9,25 +10,24 @@ namespace NumberSequences.UI
 
         public int Run(string[] args)
         {
-            int start;
-            int? end;
+            int? startValue;
+            int boundaryValue;
 
             try
             {
-                Validator.Parse(args, out this.sequenceGenerator, out start, out end);
-                if (end == null)
+                Validator.Parse(args, out this.sequenceGenerator, out boundaryValue, out startValue);
+                if (startValue == null)
                 {
-                    this.sequenceGenerator.Initialize(start);
+                    this.sequenceGenerator.Initialize(boundaryValue);
                 }
                 else
                 {
-                    this.sequenceGenerator.Initialize(start, end.Value);
+                    this.sequenceGenerator.Initialize(startValue.Value, boundaryValue);
                 }
 
-                foreach (int element in this.sequenceGenerator)
-                {
-                    Console.WriteLine(element);
-                }
+                this.sequenceGenerator.DoNotHaveElementsInSequence += (sender, eventArgs) =>
+                    Console.Write("Requested sequence doesn`t have elements!");
+                this.PrintSequence();                
             }
             catch (Exception exception)
             {
@@ -37,6 +37,24 @@ namespace NumberSequences.UI
             }
 
             return (int)ReturnCode.Success;
+        }
+
+        private void PrintSequence()
+        {
+            Console.Write("Your sequence: ");
+            StringBuilder consoleString = new StringBuilder();
+            foreach (int element in this.sequenceGenerator)
+            {
+                consoleString.Append(element);
+                consoleString.Append(", ");
+            }
+
+            if (consoleString.Length > 2)
+            {
+                consoleString.Length -= 2;
+            }
+
+            Console.WriteLine(consoleString);
         }
 
         private void Instructions()

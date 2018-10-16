@@ -3,14 +3,18 @@ using System.Collections;
 
 namespace NumberSequences.NumberSequencesGenerator
 {
+    //public delegate void EmptySequenceHandler();
+
     public interface ISequenceGenerator
     {
-        int StartWith
+        event EventHandler DoNotHaveElementsInSequence;
+
+        int StartValue
         {
             get;
         }
 
-        int Border
+        int BoundaryValue
         {
             get;
         }
@@ -20,9 +24,9 @@ namespace NumberSequences.NumberSequencesGenerator
             get;
         }
 
-        void Initialize(int border, int startwith);
+        void Initialize(int startValue, int boundaryValue);
 
-        void Initialize(int border);
+        void Initialize(int boundaryValue);
 
         IEnumerator GetEnumerator();
     }
