@@ -1,13 +1,17 @@
-﻿using System;
+﻿// <copyright file="NumberSequenceGenerator.cs" company="Peretiatko Anastasiia">
+// Copyright (c) Peretiatko Anastasiia. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections;
 
 namespace NumberSequences.NumberSequencesGenerator
 {
-    public abstract class SequenceGenerator : ISequenceGenerator
+    public abstract class NumberSequenceGenerator : ISequenceGenerator
     {
         protected const int NOT_INITIALIZED = -1;
 
-        public SequenceGenerator()
+        public NumberSequenceGenerator()
         {
             this.StartValue = NOT_INITIALIZED;
             this.BoundaryValue = NOT_INITIALIZED;
@@ -54,6 +58,13 @@ namespace NumberSequences.NumberSequencesGenerator
                 throw new ArgumentException("Invalid value of arguments! "
                     + "Can`t build sequence with such values! "
                     + $"Sequence of requested type starts with {this.MinimumValue}!");
+            }
+
+            if (boundaryValue > int.MaxValue - 1)
+            {
+                throw new ArgumentException("Invalid value of arguments! "
+                    + "Can`t build sequence with such values! "
+                    + $"Boundary value of sequence can not be bigger than {int.MaxValue - 1}!");
             }
 
             this.StartValue = startValue;

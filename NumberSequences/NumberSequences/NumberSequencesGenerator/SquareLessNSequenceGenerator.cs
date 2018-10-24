@@ -1,9 +1,13 @@
-﻿using System;
+﻿// <copyright file="SquareLessNSequenceGenerator.cs" company="Peretiatko Anastasiia">
+// Copyright (c) Peretiatko Anastasiia. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections;
 
 namespace NumberSequences.NumberSequencesGenerator
 {
-    public class SquareLessNSequenceGenerator : SequenceGenerator
+    public class SquareLessNSequenceGenerator : NumberSequenceGenerator
     {
         public SquareLessNSequenceGenerator() : base()
         {
@@ -18,13 +22,13 @@ namespace NumberSequences.NumberSequencesGenerator
             {
                 int elementOfSequence = this.StartValue;
 
-                if (elementOfSequence * elementOfSequence >= this.BoundaryValue)
+                if (GetNext(ref elementOfSequence) >= this.BoundaryValue)
                 {
                     this.DoNotHaveElementsInSequence?.Invoke(this, EventArgs.Empty);
                     yield break;
                 }
 
-                while (elementOfSequence * elementOfSequence < this.BoundaryValue)
+                while (GetNext(ref elementOfSequence) < this.BoundaryValue)
                 {
                     yield return elementOfSequence;
                     elementOfSequence++;
@@ -33,6 +37,21 @@ namespace NumberSequences.NumberSequencesGenerator
             else
             {
                 throw new ArgumentNullException("The sequence is not initialized!");
+            }
+        }
+
+        private int GetNext(ref int elementOfSequence)
+        {
+            try
+            { 
+            checked
+                { 
+                    return elementOfSequence * elementOfSequence;
+                }
+            }
+            catch(OverflowException)
+            {
+                return this.BoundaryValue + 1;
             }
         }
     }

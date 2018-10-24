@@ -1,10 +1,12 @@
-﻿using System;
+﻿// <copyright file="ISequenceGenerator.cs" company="Peretiatko Anastasiia">
+// Copyright (c) Peretiatko Anastasiia. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections;
 
 namespace NumberSequences.NumberSequencesGenerator
 {
-    //public delegate void EmptySequenceHandler();
-
     public interface ISequenceGenerator
     {
         event EventHandler DoNotHaveElementsInSequence;

@@ -1,9 +1,13 @@
-﻿using System;
+﻿// <copyright file="Parser.cs" company="Peretiatko Anastasiia">
+// Copyright (c) Peretiatko Anastasiia. All rights reserved.
+// </copyright>
+
+using System;
 using NumberSequences.NumberSequencesGenerator;
 
 namespace NumberSequences.UI
 {
-    internal static class Validator
+    public static class Parser
     {
         public static void Parse(
             string[] args,
@@ -13,13 +17,13 @@ namespace NumberSequences.UI
         {
             if (args.Length < (int)ArgumentsCount.Minimum)
             {
-                throw new InvalidCountOfArgumentsException("You do not have enough arguments! "
+                throw new ArgumentException("You do not have enough arguments! "
                     + "Please, enter the correct number of arguments!");
             }
 
             if (args.Length > (int)ArgumentsCount.Maximum)
             {
-                throw new InvalidCountOfArgumentsException("You have too many arguments! "
+                throw new ArgumentException("You have too many arguments! "
                     + "Please, enter the correct number of arguments!");
             }
 
@@ -33,13 +37,13 @@ namespace NumberSequences.UI
                     sequenceGenerator = new SquareLessNSequenceGenerator();
                     break;
                 default:
-                    throw new InvalidGeneratorException("Please, enter correct algorithm "
+                    throw new ArgumentException("Please, enter correct algorithm "
                             + "for searching the sequence");
             }
 
             if (!int.TryParse(args[1], out boundaryValue))
             {
-                throw new FormatException("The second argument is not a number!");
+                throw new ArgumentException("The second argument is not a number or is a too big number!");
             }
 
             startValue = null;
@@ -48,20 +52,20 @@ namespace NumberSequences.UI
                 int thirdArgument;
                 if (!int.TryParse(args[2], out thirdArgument))
                 {
-                    throw new FormatException("The third argument is not a number!");
+                    throw new ArgumentException("The third argument is not a number!");
                 }
                 else
                 {
                     startValue = thirdArgument;
                     if (startValue - boundaryValue > 0)
                     {
-                        throw new InvalidArgumentsValueException("The third argument (boundary value) can not be "
+                        throw new ArgumentException("The third argument (boundary value) can not be "
                             + "bigger than second (start value)! Please, check your arguments!");
                     }
 
                     if (startValue < 0 || boundaryValue < 0)
                     {
-                        throw new InvalidArgumentsValueException("Arguments can not be negative!");
+                        throw new ArgumentException("Arguments can not be negative!");
                     }
                 }
             }

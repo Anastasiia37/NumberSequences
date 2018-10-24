@@ -1,10 +1,14 @@
-﻿using System;
+﻿// <copyright file="SequenceGeneratorProgram.cs" company="Peretiatko Anastasiia">
+// Copyright (c) Peretiatko Anastasiia. All rights reserved.
+// </copyright>
+
+using System;
 using System.Text;
 using NumberSequences.NumberSequencesGenerator;
 
 namespace NumberSequences.UI
 {
-    internal class SequenceGeneratorProgram
+    public class SequenceGeneratorProgram
     {
         private ISequenceGenerator sequenceGenerator;
 
@@ -15,7 +19,7 @@ namespace NumberSequences.UI
 
             try
             {
-                Validator.Parse(args, out this.sequenceGenerator, out boundaryValue, out startValue);
+                Parser.Parse(args, out this.sequenceGenerator, out boundaryValue, out startValue);
                 if (startValue == null)
                 {
                     this.sequenceGenerator.Initialize(boundaryValue);
@@ -25,11 +29,9 @@ namespace NumberSequences.UI
                     this.sequenceGenerator.Initialize(startValue.Value, boundaryValue);
                 }
 
-                this.sequenceGenerator.DoNotHaveElementsInSequence += (sender, eventArgs) =>
-                    Console.Write("Requested sequence doesn`t have elements!");
                 this.PrintSequence();                
             }
-            catch (Exception exception)
+            catch (ArgumentException exception)
             {
                 Console.WriteLine(exception.Message);
                 this.Instructions();
@@ -41,6 +43,8 @@ namespace NumberSequences.UI
 
         private void PrintSequence()
         {
+            this.sequenceGenerator.DoNotHaveElementsInSequence += (sender, eventArgs) =>
+                Console.Write("Requested sequence doesn`t have elements!");
             Console.Write("Your sequence: ");
             StringBuilder consoleString = new StringBuilder();
             foreach (int element in this.sequenceGenerator)
@@ -61,7 +65,7 @@ namespace NumberSequences.UI
         {
             Console.WriteLine("Input arguments: SequenceGenerator Border [StartWith]\n"
                 + "SequenceGenerator = fibonacci or squarelessn\n"
-                + "Border is the boundary value of a sequence\n"
+                + "Border is the boundary value of a sequence (up to 2.147.483.646)\n"
                 + "StartWith is the start value of sequence\n");
         }
     }

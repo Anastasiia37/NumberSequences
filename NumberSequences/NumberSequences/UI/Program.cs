@@ -1,4 +1,6 @@
-﻿using System;
+﻿// <copyright file="Program.cs" company="Peretiatko Anastasiia">
+// Copyright (c) Peretiatko Anastasiia. All rights reserved.
+// </copyright>
 
 namespace NumberSequences.UI
 {
